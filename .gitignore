@@ -24,8 +24,4 @@ yarn-error.log*
 
 
 # 3D Models
-/public/models/cyber_truck
-/public/models/mech_drone
-/public/models/model_s
-/public/models/tesla_roadster
 /public/assets/big_size

@@ -17,10 +17,6 @@ const Car = () => {
                     <Model path="/models/model_s/scene.gltf" scale={new Array(3).fill(0.01)} />
                 </BoundingBox>
             </Dragable>
-
-            <group rotation={[0, Math.PI, 0]}>
-                <Model path="/models/mech_drone/scene.gltf" scale={new Array(3).fill(5.5)} />
-            </group>
         </Suspense>
     );
 };
