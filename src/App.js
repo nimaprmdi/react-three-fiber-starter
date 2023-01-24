@@ -14,6 +14,7 @@ import Effects from "./components/Effects";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Physics } from "@react-three/cannon";
+import DatGui, { DatNumber, DatColor } from "react-dat-gui";
 
 function App() {
   return (
@@ -27,7 +28,9 @@ function App() {
       style={{ height: "100vh", width: "100vw" }}
     >
       <ColorPicker />
+
       <CameraButton />
+
       {/* <MoveObjectButton /> */}
 
       <Canvas onCreated={(state) => state.gl.setClearColor("#92CFFF")} camera={{ position: [7, 7, 7] }} shadows>
@@ -65,6 +68,13 @@ function App() {
           {/* <Effects /> */}
         </Physics>
       </Canvas>
+
+      <DatGui data={opts} onUpdate={setOpts}>
+        <DatNumber path="bulbPosX" min={-50} max={50} step={0.0001} />
+        <DatNumber path="bulbPosY" min={-50} max={50} step={0.0001} />
+        <DatNumber path="bulbPosZ" min={-50} max={50} step={0.0001} />
+        <DatColor path="bgColor" label="background Color" />
+      </DatGui>
     </div>
   );
 }
