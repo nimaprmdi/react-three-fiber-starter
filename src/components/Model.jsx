@@ -20,7 +20,7 @@ function Model(props) {
     mixer?.update(delta);
   });
 
-  console.log(props.path, model);
+  // console.log(props.path, model);
 
   model.scene.traverse((child) => {
     if (child.isMesh) {
@@ -32,7 +32,7 @@ function Model(props) {
 
   model.scene.name = props.name || `model-uuid-${Math.random() * 100}-${Math.random() * 100}`;
 
-  return <primitive object={model.scene} scale={props.scale} {...props} size={[1, 1, 1]} />;
+  return <primitive object={model.scene} scale={props.scale} size={[1, 1, 1]} {...props} />;
 }
 
 export default Model;

@@ -3,6 +3,7 @@ import Model from "./Model";
 import BoundingBox from "./BoundingBox";
 import Dragable from "./Dragable";
 
+// @todo : Make them as objects so they with the position and the rotation they needed
 const Models = () => {
   const cityNames = [
     "tehran",
