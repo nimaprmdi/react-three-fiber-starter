@@ -7,6 +7,10 @@ import state from "../state";
 function Model(props) {
   const model = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
 
+  useEffect(() => {
+    console.log("model", model);
+  }, [model]);
+
   // get default city position
   const [objPos, setObjPos] = useState({
     x: 0,
@@ -43,7 +47,7 @@ function Model(props) {
     // CyberTruck
     1: {
       cameraPos: [7, 2, 6],
-      target: [4, 0, 0],
+      target: [2, 0, 0],
       name: "mesh_9",
     },
     // Model 3
@@ -79,8 +83,7 @@ function Model(props) {
         e.object.material.color.setHex(0xc4c4c4);
       }}
       onClick={(e) => {
-        console.log(e.object.name);
-        // handleClick(1);
+        handleClick(1);
         // e.object.position.x += 0.005;
       }}
       onUpdate={(self) => {

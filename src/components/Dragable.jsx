@@ -17,6 +17,7 @@ const Dragable = (props) => {
     controlRef.current.addEventListener("hoveron", (e) => {
       scene.orbitControls.enabled = false;
       // console.log(e.object.name);
+      console.log(e.object.position);
     });
 
     controlRef.current.addEventListener("hoveroff", (e) => {
@@ -44,6 +45,7 @@ const Dragable = (props) => {
   return (
     <group ref={groupRef}>
       <dragControls
+        enabled={false}
         transformGroup={props.transformGroup}
         ref={controlRef}
         args={[children, camera, gl.domElement]}
