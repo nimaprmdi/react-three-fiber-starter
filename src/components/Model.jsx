@@ -30,7 +30,7 @@ function Model(props) {
     }
   });
 
-  return <primitive object={model.scene} scale={props.scale} {...props} />;
+  return <primitive object={model.scene} scale={props.scale} {...props} size={[1, 1, 1]} />;
 }
 
 export default Model;

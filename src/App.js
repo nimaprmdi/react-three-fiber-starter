@@ -9,60 +9,63 @@ import Car from "./components/Car";
 import CameraControls from "./components/CameraControls";
 import CameraButton from "./components/CameraButton";
 import Lights from "./components/Lights";
+import MoveObjectButton from "./components/MoveObjectButton";
 import Effects from "./components/Effects";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Physics } from "@react-three/cannon";
 
 function App() {
-    return (
-        <div
-            gl={{
-                powerPreference: "high-performance",
-                antialias: false,
-                stencil: false,
-                depth: false,
-            }}
-            style={{ height: "100vh", width: "100vw" }}
-        >
-            <ColorPicker />
-            <CameraButton />
-            <Canvas camera={{ position: [7, 7, 7] }} shadows>
-                <CameraControls />
+  return (
+    <div
+      gl={{
+        powerPreference: "high-performance",
+        antialias: false,
+        stencil: false,
+        depth: false,
+      }}
+      style={{ height: "100vh", width: "100vw" }}
+    >
+      <ColorPicker />
+      <CameraButton />
+      {/* <MoveObjectButton /> */}
 
-                <Suspense fallback={null}>
-                    <Background />
-                </Suspense>
+      <Canvas camera={{ position: [7, 7, 7] }} shadows>
+        <CameraControls />
 
-                {/* <fog attach="fog" args={["white", 1, 10]} /> */}
+        <Suspense fallback={null}>
+          <Background />
+        </Suspense>
 
-                <Orbit />
+        {/* <fog attach="fog" args={["white", 1, 10]} /> */}
 
-                <ambientLight intensity={0.2} />
+        <Orbit />
 
-                <Lights />
+        <ambientLight intensity={0.2} />
 
-                <axesHelper args={[5]} />
-                <Physics>
-                    <Car />
+        <Lights />
 
-                    <Dragable>
-                        <Suspense fallback={null}>
-                            <Box position={[-7, 1, 0]} />
-                        </Suspense>
+        <axesHelper args={[5]} />
+        <Physics>
+          <Car />
 
-                        <Suspense fallback={null}>
-                            <Box position={[7, 1, 0]} />
-                        </Suspense>
-                    </Dragable>
+          <Dragable>
+            <Suspense fallback={null}>
+              <Box position={[-7, 1, 0]} />
+            </Suspense>
 
-                    <Floor position={[0, -0.5, 0]} />
+            <Suspense fallback={null}>
+              <Box position={[7, 1, 0]} />
+            </Suspense>
+          </Dragable>
 
-                    <Effects />
-                </Physics>
-            </Canvas>
-        </div>
-    );
+          <Floor position={[0, -0.5, 0]} />
+
+          <Effects />
+        </Physics>
+      </Canvas>
+    </div>
+  );
 }
 
 export default App;
