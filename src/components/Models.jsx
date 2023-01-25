@@ -4,7 +4,7 @@ import BoundingBox from "./BoundingBox";
 import Dragable from "./Dragable";
 
 // @todo : Make them as objects so they with the position and the rotation they needed
-const Models = () => {
+const Models = ({ opts }) => {
   const cityNames = [
     "tehran",
     "zanjan",
@@ -74,17 +74,28 @@ const Models = () => {
         </BoundingBox>
       </Dragable> */}
 
-      {/* <Model path="/models/cities/semnan2.glb" scale={new Array(3).fill(10)} /> */}
+      <Dragable key={`object`}>
+        <Model
+          cityPos={opts}
+          position={[1, -0.02, 1]}
+          path={`/models/country/iran.glb`}
+          scale={new Array(3).fill(10)}
+        />
+      </Dragable>
 
-      {cityNames.map((city, index) => {
-        return (
-          <Dragable key={`object-${index}`}>
-            <Model position={[-4 * index, 3, 2 * index]} path={`/models/cities/${city}.glb`} scale={new Array(3).fill(10)} />
+      {/* cityNames.map((city, index) => {
+      return (
+        <Dragable key={`object-${index}`}>
+            <Model
+              position={[-4 * index, 3, 2 * index]}
+              path={`/models/cities/${city}.glb`}
+              scale={new Array(3).fill(10)}
+            />
             {/* <BoundingBox visibledims={[3, 2, 6]} offset={[0, -0.8, 0]}>
-            </BoundingBox> */}
+            </BoundingBox> 
           </Dragable>
         );
-      })}
+      }) */}
     </Suspense>
   );
 };

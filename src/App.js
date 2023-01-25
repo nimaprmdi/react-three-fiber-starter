@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Orbit from "./components/Orbit";
 import Box from "./components/Box";
 import Floor from "./components/Floor";
@@ -15,8 +15,19 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Physics } from "@react-three/cannon";
 import DatGui, { DatNumber, DatColor } from "react-dat-gui";
+import "./assets/css/style.css";
 
 function App() {
+  const [opts, setOpts] = useState({
+    posX: 0,
+    posY: 0,
+    posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
+  });
+
   return (
     <div
       gl={{
@@ -55,7 +66,7 @@ function App() {
         <axesHelper args={[5]} />
 
         <Physics>
-          <Models />
+          <Models opts={opts} />
 
           {/*<Dragable>
             <Suspense fallback={null}>
@@ -74,10 +85,13 @@ function App() {
       </Canvas>
 
       <DatGui data={opts} onUpdate={setOpts}>
-        <DatNumber path="bulbPosX" min={-50} max={50} step={0.0001} />
-        <DatNumber path="bulbPosY" min={-50} max={50} step={0.0001} />
-        <DatNumber path="bulbPosZ" min={-50} max={50} step={0.0001} />
-        <DatColor path="bgColor" label="background Color" />
+        <DatNumber path="posX" min={-1} max={1} step={0.0001} />
+        <DatNumber path="posY" min={-1} max={1} step={0.0001} />
+        <DatNumber path="posZ" min={-1} max={1} step={0.0001} />
+
+        <DatNumber path="rotX" min={-1} max={1} step={0.0001} />
+        <DatNumber path="rotY" min={-1} max={1} step={0.0001} />
+        <DatNumber path="rotZ" min={-1} max={1} step={0.0001} />
       </DatGui>
     </div>
   );
