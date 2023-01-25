@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useLoader, useFrame } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
@@ -6,7 +6,6 @@ import state from "../state";
 
 function Model(props) {
   const model = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
-  const meshRef = useRef();
 
   // get default city position
   const [objPos, setObjPos] = useState({
@@ -27,7 +26,6 @@ function Model(props) {
 
   useFrame((scene, delta) => {
     mixer?.update(delta);
-    // console.log(meshRef.current.children[0].position.x);
   });
 
   model.scene.traverse((child) => {
@@ -65,14 +63,11 @@ function Model(props) {
 
   return (
     <primitive
-      ref={meshRef}
       object={model.scene}
       scale={props.scale}
       size={[1, 1, 1]}
       {...props}
       onPointerEnter={(e) => {
-        console.log("e", e);
-
         const material = e.object.material.clone();
         material.color.set(0x7ad5ff);
         e.object.material = material;
@@ -80,27 +75,29 @@ function Model(props) {
         e.object.position.y = 0.005;
       }}
       onPointerLeave={(e) => {
-        // postion revert back
         e.object.position.y = 0;
-        // Color revert back
         e.object.material.color.setHex(0xc4c4c4);
       }}
       onClick={(e) => {
-        e.object.position.x += 0.00005;
+        console.log(e.object.name);
+        // handleClick(1);
+        // e.object.position.x += 0.005;
       }}
       onUpdate={(self) => {
         console.log("self", self);
 
-        self.children.map((childOBJ) => {
-          // console.log("childOBJ", childOBJ);
+        self.children.map((e) => {
+          /** ShowCase */
+          // const material = new THREE.MeshBasicMaterial({
+          //   color: 0x00ff00,
+          //   side: THREE.BackSide,
+          // });
+          // childOBJ.material = material;
 
-          // childOBJ.position.set(
-          //   props.cityPos.posX,
-          //   props.cityPos.posY,
-          //   props.cityPos.posZ
-          // );
+          console.log(e.position.x);
 
-          childOBJ.material.color.set(0xc4c4c4);
+          // handle all objects color
+          e.material.color.set(0xc4c4c4);
         });
       }}
     />
