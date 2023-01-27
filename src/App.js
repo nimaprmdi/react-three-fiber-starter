@@ -38,14 +38,14 @@ function App() {
       }}
       style={{ height: "100vh", width: "100vw" }}
     >
-      <ColorPicker />
+      {/* <ColorPicker /> */}
 
       <CameraButton />
 
       {/* <MoveObjectButton /> */}
 
       <Canvas
-        onCreated={(state) => state.gl.setClearColor("#92CFFF")}
+        onCreated={(state) => state.gl.setClearColor("#000000")}
         camera={{ position: [7, 7, 7] }}
         shadows
       >
@@ -84,15 +84,15 @@ function App() {
         </Physics>
       </Canvas>
 
-      <DatGui data={opts} onUpdate={setOpts}>
-        <DatNumber path="posX" min={-1} max={1} step={0.0001} />
-        <DatNumber path="posY" min={-1} max={1} step={0.0001} />
-        <DatNumber path="posZ" min={-1} max={1} step={0.0001} />
+      {/* <DatGui data={opts} onUpdate={setOpts}>
+        <DatNumber path="posX" min={-15} max={15} step={0.0001} />
+        <DatNumber path="posY" min={-15} max={15} step={0.0001} />
+        <DatNumber path="posZ" min={-15} max={15} step={0.0001} />
 
-        <DatNumber path="rotX" min={-1} max={1} step={0.0001} />
-        <DatNumber path="rotY" min={-1} max={1} step={0.0001} />
-        <DatNumber path="rotZ" min={-1} max={1} step={0.0001} />
-      </DatGui>
+        <DatNumber path="rotX" min={-15} max={15} step={0.0001} />
+        <DatNumber path="rotY" min={-15} max={15} step={0.0001} />
+        <DatNumber path="rotZ" min={-15} max={15} step={0.0001} />
+      </DatGui> */}
     </div>
   );
 }

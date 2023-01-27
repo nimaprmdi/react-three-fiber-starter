@@ -5,6 +5,8 @@ import * as THREE from "three";
 import state from "../state";
 
 function Model(props) {
+  console.log("props", props);
+
   const model = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
 
   useEffect(() => {
@@ -28,8 +30,22 @@ function Model(props) {
     });
   }
 
-  useFrame((scene, delta) => {
+  useFrame(({ scene, delta, camera }) => {
     mixer?.update(delta);
+
+    // console.log(camera);
+
+    // console.log("pos", {
+    //   x: camera.position.x,
+    //   Y: camera.position.y,
+    //   z: camera.position.z,
+    // });
+
+    // console.log("rot", {
+    //   x: camera.rotation.x,
+    //   Y: camera.rotation.y,
+    //   z: camera.rotation.z,
+    // });
   });
 
   model.scene.traverse((child) => {
@@ -44,25 +60,40 @@ function Model(props) {
   //   props.name || `model-uuid-${Math.random() * 100}-${Math.random() * 100}`;
 
   const cameraSets = {
-    // CyberTruck
-    1: {
-      cameraPos: [7, 2, 6],
-      target: [2, 0, 0],
+    citySelect: {
+      cameraPos: [-2.3277374131613913, 6.765905284235648, 24.935194068247295],
+      target: new THREE.Vector3(
+        -4.912793512892549,
+        6.4723735429666895,
+        25.724031396077393
+      ),
+      cameraFov: 60,
       name: "mesh_9",
-    },
-    // Model 3
-    2: {
-      cameraPos: [1, 2, 5],
-      target: [-4, 0, 0],
-      name: "object005_bod_0",
     },
   };
 
-  const handleClick = (num) => {
+  //   {
+  //     "x": -2.3277374131613913,
+  //     "Y": 6.765905284235648,
+  //     "z": 24.935194068247295
+  // }
+
+  //   {
+  //     "x": -3.1367406778024938,
+  //     "Y": 1.4777558752093995,
+  //     "z": 3.136761662956655
+  // }
+
+  const handleClick = (e, num) => {
+    console.log(e);
     state.cameraPos.set(...cameraSets[num].cameraPos);
     state.target.set(...cameraSets[num].target);
     state.activeMeshName = cameraSets[num].name;
     state.shouldUpdate = true;
+
+    // object postion
+    e.object.position.set(-0.5412, 0.791, 2.7651);
+    e.object.rotation.set(1.6193, -0.0015, -1.9148);
   };
 
   return (
@@ -78,13 +109,14 @@ function Model(props) {
 
         e.object.position.y = 0.005;
       }}
+      onDoubleClick={(e) => {
+        // e.object.position.x += 0.005;
+
+        handleClick(e, "citySelect");
+      }}
       onPointerLeave={(e) => {
         e.object.position.y = 0;
         e.object.material.color.setHex(0xc4c4c4);
-      }}
-      onClick={(e) => {
-        handleClick(1);
-        // e.object.position.x += 0.005;
       }}
       onUpdate={(self) => {
         console.log("self", self);
@@ -97,7 +129,7 @@ function Model(props) {
           // });
           // childOBJ.material = material;
 
-          console.log(e.position.x);
+          // console.log("e update", e);
 
           // handle all objects color
           e.material.color.set(0xc4c4c4);
