@@ -24,6 +24,7 @@ function Model(props) {
     });
   }
 
+  let x = 0;
   useFrame(({ scene, delta, camera }) => {
     mixer?.update(delta);
 
@@ -46,9 +47,12 @@ function Model(props) {
       };
 
       if ((animationState && child.position.x <= -0.02) || child.position.y <= 0.003 || child.position.z <= -0.1 || child.rotation.x <= 1.5) {
+        x += 0.00005;
+        child.translateY(x);
+
         child.position.x += 0.0005;
-        child.position.y += 0.0005;
-        child.position.z += 0.0005;
+        // child.position.y += 0.0005;
+        // child.position.z += 0.0005;
 
         // child.rotation.x += 0.0002;
         // child.rotation.y += 0.0005;
