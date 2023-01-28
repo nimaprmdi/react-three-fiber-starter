@@ -8,17 +8,17 @@ import camState from "../camState";
 import { PrimaryContext } from "../context/PrimaryContext";
 
 function Model(props) {
-  const [isCityUp, setIsCityUp] = useState(false);
+  const [animationState, setAnimationState] = useState(false);
   const { state, dispatch } = useContext(PrimaryContext);
-  const childMeshRef = useRef();
+  const objRef = useRef();
 
-  const model = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
+  const { scene, animations, nodes } = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
 
   let mixer;
-  if (model.animations.length > 0) {
-    mixer = new THREE.AnimationMixer(model.scene);
+  if (animations.length > 0) {
+    mixer = new THREE.AnimationMixer(scene);
 
-    model.animations.forEach((clip) => {
+    animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       action.play();
     });
@@ -26,20 +26,57 @@ function Model(props) {
 
   useFrame(({ scene, delta, camera }) => {
     mixer?.update(delta);
+
+    if (state.selectedCity && animationState) {
+      const child = objRef.current.children.find((child) => child.name === state.selectedCity.name);
+      // child.geometry.computeBoundingBox();
+      // let matrix = new THREE.Vector3();
+      // let offset = child.geometry.boundingBox.getCenter(matrix);
+      // child.position.copy(offset);
+      // objRef.current.children.push(child);
+
+      const cityFinalPos = {
+        posX: -0.2,
+        posY: 0.3,
+        posZ: -0.1,
+
+        rotX: 1.5,
+        rotY: 0,
+        rotZ: 0,
+      };
+
+      if ((animationState && child.position.x <= -0.02) || child.position.y <= 0.003 || child.position.z <= -0.1 || child.rotation.x <= 1.5) {
+        child.position.x += 0.0005;
+        child.position.y += 0.0005;
+        child.position.z += 0.0005;
+
+        // child.rotation.x += 0.0002;
+        // child.rotation.y += 0.0005;
+        // child.rotation.z += 0.0005;
+      }
+
+      // setAnimationState(false);
+    }
   });
 
-  model.scene.traverse((child) => {
+  scene.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
       child.material.side = THREE.FrontSide;
     }
+
+    // if (child instanceof THREE.Mesh) {
+    //   child.geometry.computeBoundingBox();
+    //   let matrix = new THREE.Vector3();
+    //   let offset = child.geometry.boundingBox.getCenter(matrix);
+    // }
   });
 
   const cameraSets = {
     citySelect: {
-      cameraPos: [-2.3277374131613913, 6.765905284235648, 24.935194068247295],
-      target: new THREE.Vector3(-4.912793512892549, 6.4723735429666895, 25.724031396077393),
+      cameraPos: [2.5790249891330435, 1.0837018399047853, 3.8996706953566083],
+      target: [-4.6207906965525725, -9.079737226323157, -24.267069032120112],
       cameraFov: 60,
       name: "mesh_9",
     },
@@ -50,24 +87,21 @@ function Model(props) {
     material.color.set(0x7ad5ff);
     e.object.material = material;
 
-    if (!isCityUp) {
+    if (!state.isCityUp) {
       e.object.position.y = 0.005;
     }
   };
 
   const handlePointerLeave = (e) => {
-    if (!isCityUp) {
+    if (!state.isCityUp) {
       e.object.position.y = 0;
     }
     e.object.material.color.setHex(0xc4c4c4);
   };
 
   const handleDoubleClick = (e, num) => {
-    const object = e.object.clone();
-    dispatch({ type: "SELECT_CITY", payload: object });
+    dispatch({ type: "SELECT_CITY", payload: e.object });
     dispatch({ type: "SET_CITY_UP", payload: true });
-
-    setIsCityUp(true);
 
     camState.cameraPos.set(...cameraSets[num].cameraPos);
     camState.target.set(...cameraSets[num].target);
@@ -75,31 +109,54 @@ function Model(props) {
     camState.shouldUpdate = true;
 
     // Object postion
-    e.object.position.set(-0.5412, 0.791, 2.7651);
-    e.object.rotation.set(1.6193, -0.0015, -1.9148);
+    // e.object.position.set(-0.08, 0.004, 0);
+    // e.object.rotation.set(1.358, 0, 0);
+
+    setAnimationState(true);
   };
 
   return (
     <primitive
-      object={model.scene}
+      object={scene}
       scale={props.scale}
+      ref={objRef}
       size={[1, 1, 1]}
       {...props}
+      // onClick={(e) => {
+      //   console.log(objRef.current.children[3].position.x);
+      //   objRef.current.children[3].position.x = 1;
+      // }}
       onPointerEnter={(e) => handlePointerEnter(e)}
       onPointerLeave={(e) => handlePointerLeave(e)}
       onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
       onUpdate={(self) => {
-        self.children.map((city) => {
-          city.material.color.set(0xc4c4c4);
+        console.log(self);
 
-          if (state.selectedCity && state.selectedCity.name === city.name) {
-            // const x = city.position.prototype.copy();
-            console.log(city);
-          }
-          if (state.selectedCity && !state.isCityUp && state.selectedCity.name === city.name) {
-            city.position.set(state.selectedCity.position.x, state.selectedCity.position.y, state.selectedCity.position.z);
-          }
+        if (state.selectedCity) {
+          self.position.x = state.selectedCity.position.x;
+        }
+
+        // Dat GUI
+        // self.position.set(props.cityPos.posX, props.cityPos.posY, props.cityPos.posZ);
+        // self.rotation.set(props.cityPos.rotX, props.cityPos.rotY, props.cityPos.rotZ);
+
+        console.log("self", self);
+
+        self.children.map((child) => {
+          child.material.color.setHex(0xc4c4c4);
         });
+
+        if (state.selectedCity) {
+          const child = objRef.current.children.find((child) => child.name === state.selectedCity.name);
+
+          // child.position.x = props.cityPos.posX;
+          // child.position.y = props.cityPos.posY;
+          // child.position.z = props.cityPos.posZ;
+
+          // child.rotation.x = props.cityPos.rotX;
+          // child.rotation.y = props.cityPos.rotY;
+          // child.rotation.z = props.cityPos.rotZ;
+        }
       }}
     />
   );

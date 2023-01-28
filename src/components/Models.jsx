@@ -74,14 +74,7 @@ const Models = ({ opts }) => {
         </BoundingBox>
       </Dragable> */}
 
-      <Dragable>
-        <Model
-          cityPos={opts}
-          position={[1, -0.02, 1]}
-          path={`/models/country/iran.glb`}
-          scale={new Array(3).fill(10)}
-        />
-      </Dragable>
+      <Model cityPos={opts} position={[1, -0.02, 1]} path={`/models/country/iran.glb`} scale={new Array(3).fill(10)} />
 
       {/* cityNames.map((city, index) => {
       return (

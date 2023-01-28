@@ -77,13 +77,13 @@ function App() {
       </Canvas>
 
       {/* <DatGui data={opts} onUpdate={setOpts}>
-        <DatNumber path="posX" min={-15} max={15} step={0.0001} />
-        <DatNumber path="posY" min={-15} max={15} step={0.0001} />
-        <DatNumber path="posZ" min={-15} max={15} step={0.0001} />
+        <DatNumber path="posX" min={-15} max={15} step={0.001} />
+        <DatNumber path="posY" min={-15} max={15} step={0.001} />
+        <DatNumber path="posZ" min={-15} max={15} step={0.001} />
 
-        <DatNumber path="rotX" min={-15} max={15} step={0.0001} />
-        <DatNumber path="rotY" min={-15} max={15} step={0.0001} />
-        <DatNumber path="rotZ" min={-15} max={15} step={0.0001} />
+        <DatNumber path="rotX" min={-15} max={15} step={0.001} />
+        <DatNumber path="rotY" min={-15} max={15} step={0.001} />
+        <DatNumber path="rotZ" min={-15} max={15} step={0.001} />
       </DatGui> */}
     </div>
   );
