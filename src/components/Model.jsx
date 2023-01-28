@@ -1,24 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { useLoader, useFrame } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
-import state from "../state";
+import camState from "../camState";
+
+// context
+import { PrimaryContext } from "../context/PrimaryContext";
 
 function Model(props) {
-  console.log("props", props);
+  const [isCityUp, setIsCityUp] = useState(false);
+  const { state, dispatch } = useContext(PrimaryContext);
+  const childMeshRef = useRef();
 
   const model = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
-
-  useEffect(() => {
-    console.log("model", model);
-  }, [model]);
-
-  // get default city position
-  const [objPos, setObjPos] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
-  });
 
   let mixer;
   if (model.animations.length > 0) {
@@ -32,20 +26,6 @@ function Model(props) {
 
   useFrame(({ scene, delta, camera }) => {
     mixer?.update(delta);
-
-    // console.log(camera);
-
-    // console.log("pos", {
-    //   x: camera.position.x,
-    //   Y: camera.position.y,
-    //   z: camera.position.z,
-    // });
-
-    // console.log("rot", {
-    //   x: camera.rotation.x,
-    //   Y: camera.rotation.y,
-    //   z: camera.rotation.z,
-    // });
   });
 
   model.scene.traverse((child) => {
@@ -56,42 +36,45 @@ function Model(props) {
     }
   });
 
-  // model.scene.name =
-  //   props.name || `model-uuid-${Math.random() * 100}-${Math.random() * 100}`;
-
   const cameraSets = {
     citySelect: {
       cameraPos: [-2.3277374131613913, 6.765905284235648, 24.935194068247295],
-      target: new THREE.Vector3(
-        -4.912793512892549,
-        6.4723735429666895,
-        25.724031396077393
-      ),
+      target: new THREE.Vector3(-4.912793512892549, 6.4723735429666895, 25.724031396077393),
       cameraFov: 60,
       name: "mesh_9",
     },
   };
 
-  //   {
-  //     "x": -2.3277374131613913,
-  //     "Y": 6.765905284235648,
-  //     "z": 24.935194068247295
-  // }
+  const handlePointerEnter = (e) => {
+    const material = e.object.material.clone();
+    material.color.set(0x7ad5ff);
+    e.object.material = material;
 
-  //   {
-  //     "x": -3.1367406778024938,
-  //     "Y": 1.4777558752093995,
-  //     "z": 3.136761662956655
-  // }
+    if (!isCityUp) {
+      e.object.position.y = 0.005;
+    }
+  };
 
-  const handleClick = (e, num) => {
-    console.log(e);
-    state.cameraPos.set(...cameraSets[num].cameraPos);
-    state.target.set(...cameraSets[num].target);
-    state.activeMeshName = cameraSets[num].name;
-    state.shouldUpdate = true;
+  const handlePointerLeave = (e) => {
+    if (!isCityUp) {
+      e.object.position.y = 0;
+    }
+    e.object.material.color.setHex(0xc4c4c4);
+  };
 
-    // object postion
+  const handleDoubleClick = (e, num) => {
+    const object = e.object.clone();
+    dispatch({ type: "SELECT_CITY", payload: object });
+    dispatch({ type: "SET_CITY_UP", payload: true });
+
+    setIsCityUp(true);
+
+    camState.cameraPos.set(...cameraSets[num].cameraPos);
+    camState.target.set(...cameraSets[num].target);
+    camState.activeMeshName = cameraSets[num].name;
+    camState.shouldUpdate = true;
+
+    // Object postion
     e.object.position.set(-0.5412, 0.791, 2.7651);
     e.object.rotation.set(1.6193, -0.0015, -1.9148);
   };
@@ -102,37 +85,20 @@ function Model(props) {
       scale={props.scale}
       size={[1, 1, 1]}
       {...props}
-      onPointerEnter={(e) => {
-        const material = e.object.material.clone();
-        material.color.set(0x7ad5ff);
-        e.object.material = material;
-
-        e.object.position.y = 0.005;
-      }}
-      onDoubleClick={(e) => {
-        // e.object.position.x += 0.005;
-
-        handleClick(e, "citySelect");
-      }}
-      onPointerLeave={(e) => {
-        e.object.position.y = 0;
-        e.object.material.color.setHex(0xc4c4c4);
-      }}
+      onPointerEnter={(e) => handlePointerEnter(e)}
+      onPointerLeave={(e) => handlePointerLeave(e)}
+      onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
       onUpdate={(self) => {
-        console.log("self", self);
+        self.children.map((city) => {
+          city.material.color.set(0xc4c4c4);
 
-        self.children.map((e) => {
-          /** ShowCase */
-          // const material = new THREE.MeshBasicMaterial({
-          //   color: 0x00ff00,
-          //   side: THREE.BackSide,
-          // });
-          // childOBJ.material = material;
-
-          // console.log("e update", e);
-
-          // handle all objects color
-          e.material.color.set(0xc4c4c4);
+          if (state.selectedCity && state.selectedCity.name === city.name) {
+            // const x = city.position.prototype.copy();
+            console.log(city);
+          }
+          if (state.selectedCity && !state.isCityUp && state.selectedCity.name === city.name) {
+            city.position.set(state.selectedCity.position.x, state.selectedCity.position.y, state.selectedCity.position.z);
+          }
         });
       }}
     />

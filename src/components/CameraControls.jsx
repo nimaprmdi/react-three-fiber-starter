@@ -1,23 +1,23 @@
 import { useEffect } from "react";
-import state from "../state";
+import camState from "../camState";
 import { useFrame } from "@react-three/fiber";
 
 const CameraControls = ({}) => {
   useFrame(({ camera, scene }) => {
-    if (state.activeMesh.name !== state.activeMeshName) {
-      state.activeMesh = scene.getObjectByName(state.activeMeshName) || {};
+    if (camState.activeMesh.name !== camState.activeMeshName) {
+      camState.activeMesh = scene.getObjectByName(camState.activeMeshName) || {};
     }
-    if (state.shouldUpdate) {
-      scene.orbitControls.target.lerp(state.target, 0.05); // Rotation XYZ + animation (lerp)
-      camera.position.lerp(state.cameraPos, 0.05); // Pos XYZ + animation (lerp)
-      camera.fov = state.cameraFov;
+    if (camState.shouldUpdate) {
+      scene.orbitControls.target.lerp(camState.target, 0.05); // Rotation XYZ + animation (lerp)
+      camera.position.lerp(camState.cameraPos, 0.05); // Pos XYZ + animation (lerp)
+      camera.fov = camState.cameraFov;
 
       scene.orbitControls.update();
       camera.updateProjectionMatrix();
-      const diff = camera.position.clone().sub(state.cameraPos).length();
+      const diff = camera.position.clone().sub(camState.cameraPos).length();
 
       if (diff < 0.05) {
-        state.shouldUpdate = false;
+        camState.shouldUpdate = false;
         console.log("Animation Ended");
       }
     }
