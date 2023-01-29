@@ -1,11 +1,10 @@
 import * as THREE from "three";
-import camState from "../camState";
+// import state from "../state";
 
 const ColorPicker = () => {
   const handleClick = (e) => {
-    if (!camState.activeMesh) return;
-
-    camState.activeMesh.material.color = new THREE.Color(e.target.style.background);
+    // if (!state.activeMesh) return;
+    // state.activeMesh.material.color = new THREE.Color(e.target.style.background);
   };
 
   return (

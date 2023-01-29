@@ -1,17 +1,16 @@
+import * as THREE from "three";
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { useLoader, useFrame } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import * as THREE from "three";
-import camState from "../camState";
-import objectState from "../objectState";
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
+import StateHandler from "../StateHandler";
 
 // context
-import { PrimaryContext } from "../context/PrimaryContext";
 
 function Model(props) {
+  const { state } = StateHandler();
   const [animationState, setAnimationState] = useState(false);
-  const { state, dispatch } = useContext(PrimaryContext);
+
   const meshRef = useRef();
   const { scene, animations, nodes } = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
 
@@ -47,21 +46,22 @@ function Model(props) {
     material.color.set(0x7ad5ff);
     e.object.material = material;
 
-    if (!state.isCityUp) {
+    if (!props.isCityUp) {
       e.object.position.y = 0.005;
     }
   };
 
   const handlePointerLeave = (e) => {
-    if (!state.isCityUp) {
+    if (!props.isCityUp) {
       e.object.position.y = 0;
     }
     e.object.material.color.setHex(0xc4c4c4);
   };
 
   const handleDoubleClick = (e, num) => {
-    dispatch({ type: "SELECT_CITY", payload: e.object });
-    dispatch({ type: "SET_CITY_UP", payload: true });
+    // props.isCityUp = true;
+    props.setIsCityUp(true);
+    state.selectedCity = e.object;
 
     // camState.cameraPos.set(...cameraSets[num].cameraPos);
     // camState.target.set(...cameraSets[num].target);
@@ -71,7 +71,7 @@ function Model(props) {
     setAnimationState(true);
   };
 
-  // chatgpt
+  // chatgpt positions
   const [position, setPosition] = useState([0, 0, 0]);
   const [rotation, setRotation] = useState([0, 0, 0]);
 
@@ -85,12 +85,35 @@ function Model(props) {
   });
 
   useEffect(() => {
-    if (meshRef.current && state.selectedCity && animationState) {
+    console.log("props.isCityUp", props.isCityUp);
+
+    if (meshRef.current && state.selectedCity) {
       const selectedChild = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
 
+      // selectedChild.geometry.computeBoundingBox();
+      // let matrix = new THREE.Vector3([15, 15, 15]);
+      // let offset = selectedChild.geometry.boundingBox.getCenter(matrix);
+      // selectedChild.position.copy(meshRef.current.position);
+      // meshRef.current.children.push(selectedChild);
+
       const mesh = selectedChild;
-      const tweenPosition = new TWEEN.Tween(mesh.position).to({ x: -0.16, y: 0.05, z: -0.05 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
-      const tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 1.5, y: 0.055, z: 0.055 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+
+      console.log("mesh.position", mesh.position);
+      console.log("mesh.rotatin", mesh.rotation);
+
+      let tweenPosition = {};
+      let tweenRotation = {};
+
+      if (props.isCityUp) {
+        tweenPosition = new TWEEN.Tween(mesh.position).to({ x: -0.16, y: 0.05, z: -0.05 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 1.5, y: 0.055, z: 0.055 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+      } else {
+        tweenPosition = new TWEEN.Tween(mesh.position)
+          .to({ x: -0.1671915203332901, y: 0, z: 0.13377836346626282 }, 2000)
+          .easing(TWEEN.Easing.Quadratic.Out)
+          .start();
+        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 0, y: 0, z: 0 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+      }
 
       tweenPosition.onUpdate(() => {
         setPosition([mesh.position.x, mesh.position.y, mesh.position.z]);
@@ -103,7 +126,7 @@ function Model(props) {
       selectedChild.position.set(position[0], position[1], position[2]);
       selectedChild.rotation.set(rotation[0], rotation[1], rotation[2]);
     }
-  }, [animationState]);
+  }, [props.isCityUp]);
 
   return (
     <mesh>
@@ -117,15 +140,19 @@ function Model(props) {
         onPointerLeave={(e) => handlePointerLeave(e)}
         onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
         onUpdate={(self) => {
-          console.log(self);
+          // console.log(self);
 
           if (state.selectedCity) {
             self.position.x = state.selectedCity.position.x;
           }
 
+          let x = [];
+
           self.children.map((child) => {
             child.material.transparent = true;
             child.material.color.setHex(0xc4c4c4);
+
+            x.push({ name: child.name, posY: 0 });
           });
 
           if (state.selectedCity) {
