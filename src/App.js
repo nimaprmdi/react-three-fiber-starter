@@ -18,21 +18,18 @@ import DatGui, { DatNumber, DatColor } from "react-dat-gui";
 import "./assets/css/style.css";
 
 function App() {
-  {
-    /** x: -0.16, y: 0.05, z: -0.05
-            // x: 1.5, y: 0.055, z: 0.055  */
-  }
-  const [opts, setOpts] = useState({
-    posX: -0.16,
-    posY: 0.05,
-    posZ: -0.05,
-
-    rotX: 1.5,
-    rotY: 0.055,
-    rotZ: 0.055,
-  });
+  const [displayGUI, setDisplayGUI] = useState(true);
 
   const [isCityUp, setIsCityUp] = useState(false);
+  const [opts, setOpts] = useState({
+    posX: 0.03,
+    posY: 0.19,
+    posZ: 0.09,
+
+    rotX: 1.59,
+    rotY: -0.07,
+    rotZ: -0.06,
+  });
 
   return (
     <div
@@ -46,6 +43,7 @@ function App() {
     >
       {/* <ColorPicker /> */}
       {/* <MoveObjectButton /> */}
+
       <CameraButton isCityUp={isCityUp} setIsCityUp={setIsCityUp} />
 
       <Canvas onCreated={(state) => state.gl.setClearColor("#000000")} camera={{ position: [7, 7, 7] }} shadows>
@@ -53,16 +51,18 @@ function App() {
 
         <fog attach="fog" args={["#000000", 5, 50]} />
 
-        {/* <Suspense fallback={null}>
-          <Background />
-        </Suspense> */}
+        {/* 
+          <Suspense fallback={null}>
+            <Background />
+          </Suspense> 
+        */}
 
         <Orbit />
         <ambientLight intensity={0.2} />
         <Lights />
         <axesHelper args={[5]} />
         <Physics>
-          <Models opts={opts} isCityUp={isCityUp} setIsCityUp={setIsCityUp} />
+          <Models displayGUI={displayGUI} opts={opts} isCityUp={isCityUp} setIsCityUp={setIsCityUp} />
 
           {/*<Dragable>
             <Suspense fallback={null}>
@@ -79,16 +79,17 @@ function App() {
           {/* <Effects /> */}
         </Physics>
       </Canvas>
+      {displayGUI && (
+        <DatGui data={opts} onUpdate={setOpts}>
+          <DatNumber path="posX" min={-5} max={5} step={0.001} />
+          <DatNumber path="posY" min={-5} max={5} step={0.001} />
+          <DatNumber path="posZ" min={-5} max={5} step={0.001} />
 
-      {/* <DatGui data={opts} onUpdate={setOpts}>
-        <DatNumber path="posX" min={-15} max={15} step={0.01} />
-        <DatNumber path="posY" min={-15} max={15} step={0.01} />
-        <DatNumber path="posZ" min={-15} max={15} step={0.01} />
-
-        <DatNumber path="rotX" min={-15} max={15} step={0.01} />
-        <DatNumber path="rotY" min={-15} max={15} step={0.01} />
-        <DatNumber path="rotZ" min={-15} max={15} step={0.01} />
-      </DatGui> */}
+          <DatNumber path="rotX" min={-5} max={5} step={0.001} />
+          <DatNumber path="rotY" min={-5} max={5} step={0.001} />
+          <DatNumber path="rotZ" min={-5} max={5} step={0.001} />
+        </DatGui>
+      )}
     </div>
   );
 }

@@ -58,7 +58,8 @@ function Model(props) {
   };
 
   const handleDoubleClick = (e, num) => {
-    // props.isCityUp = true;
+    console.log(e.object.name);
+
     props.setIsCityUp(true);
     state.selectedCity = e.object;
 
@@ -93,7 +94,7 @@ function Model(props) {
 
       if (props.isCityUp) {
         tweenPosition = new TWEEN.Tween(mesh.position)
-          .to({ x: selectedCityInfo.posX, y: selectedCityInfo.posY, z: selectedCityInfo.posY }, 1500)
+          .to({ x: selectedCityInfo.posX, y: selectedCityInfo.posY, z: selectedCityInfo.posZ }, 1500)
           .easing(TWEEN.Easing.Quadratic.Out)
           .start();
 
@@ -147,13 +148,24 @@ function Model(props) {
           if (state.selectedCity) {
             const child = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
 
-            // child.position.x = props.cityPos.posX;
-            // child.position.y = props.cityPos.posY;
-            // child.position.z = props.cityPos.posZ;
+            if (props.displayGUI) {
+              child.position.x = props.cityPos.posX;
+              child.position.y = props.cityPos.posY;
+              child.position.z = props.cityPos.posZ;
 
-            // child.rotation.x = props.cityPos.rotX;
-            // child.rotation.y = props.cityPos.rotY;
-            // child.rotation.z = props.cityPos.rotZ;
+              child.rotation.x = props.cityPos.rotX;
+              child.rotation.y = props.cityPos.rotY;
+              child.rotation.z = props.cityPos.rotZ;
+
+              console.log({
+                posX: child.position.x,
+                posY: child.position.y,
+                posZ: child.position.z,
+                rotX: child.rotation.x,
+                rotY: child.rotation.y,
+                rotZ: child.rotation.z,
+              });
+            }
           }
         }}
       />
