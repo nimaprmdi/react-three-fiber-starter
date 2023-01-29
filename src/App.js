@@ -46,10 +46,13 @@ function App() {
 
       <Canvas onCreated={(state) => state.gl.setClearColor("#000000")} camera={{ position: [7, 7, 7] }} shadows>
         <CameraControls />
+
+        {/* <fog attach="fog" args={["#000000", 5, 50]} /> */}
+
         {/* <Suspense fallback={null}>
           <Background />
         </Suspense> */}
-        {/* <fog attach="fog" args={["white", 1, 10]} /> */}
+
         <Orbit />
         <ambientLight intensity={0.2} />
         <Lights />

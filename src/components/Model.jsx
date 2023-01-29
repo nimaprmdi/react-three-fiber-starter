@@ -9,10 +9,10 @@ import StateHandler from "../StateHandler";
 
 function Model(props) {
   const { state } = StateHandler();
-  const [animationState, setAnimationState] = useState(false);
+  const [children, setChildren] = useState([]);
 
   const meshRef = useRef();
-  const { scene, animations, nodes } = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
+  const { scene, animations } = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
 
   let mixer;
   if (animations.length > 0) {
@@ -63,12 +63,10 @@ function Model(props) {
     props.setIsCityUp(true);
     state.selectedCity = e.object;
 
-    // camState.cameraPos.set(...cameraSets[num].cameraPos);
-    // camState.target.set(...cameraSets[num].target);
-    // camState.activeMeshName = cameraSets[num].name;
-    // camState.shouldUpdate = true;
-
-    setAnimationState(true);
+    state.cameraPos.set(...cameraSets[num].cameraPos);
+    state.target.set(...cameraSets[num].target);
+    state.activeMeshName = cameraSets[num].name;
+    state.shouldUpdate = true;
   };
 
   // chatgpt positions
@@ -85,34 +83,23 @@ function Model(props) {
   });
 
   useEffect(() => {
-    console.log("props.isCityUp", props.isCityUp);
-
     if (meshRef.current && state.selectedCity) {
       const selectedChild = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
 
-      // selectedChild.geometry.computeBoundingBox();
-      // let matrix = new THREE.Vector3([15, 15, 15]);
-      // let offset = selectedChild.geometry.boundingBox.getCenter(matrix);
-      // selectedChild.position.copy(meshRef.current.position);
-      // meshRef.current.children.push(selectedChild);
-
       const mesh = selectedChild;
-
-      console.log("mesh.position", mesh.position);
-      console.log("mesh.rotatin", mesh.rotation);
 
       let tweenPosition = {};
       let tweenRotation = {};
 
       if (props.isCityUp) {
-        tweenPosition = new TWEEN.Tween(mesh.position).to({ x: -0.16, y: 0.05, z: -0.05 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
-        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 1.5, y: 0.055, z: 0.055 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+        tweenPosition = new TWEEN.Tween(mesh.position).to({ x: -0.16, y: 0.05, z: -0.05 }, 1100).easing(TWEEN.Easing.Quadratic.Out).start();
+        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 1.5, y: 0.055, z: 0.055 }, 1100).easing(TWEEN.Easing.Quadratic.Out).start();
       } else {
         tweenPosition = new TWEEN.Tween(mesh.position)
-          .to({ x: -0.1671915203332901, y: 0, z: 0.13377836346626282 }, 2000)
+          .to({ x: -0.1671915203332901, y: 0, z: 0.13377836346626282 }, 1100)
           .easing(TWEEN.Easing.Quadratic.Out)
           .start();
-        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 0, y: 0, z: 0 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 0, y: 0, z: 0 }, 1100).easing(TWEEN.Easing.Quadratic.Out).start();
       }
 
       tweenPosition.onUpdate(() => {
@@ -140,21 +127,14 @@ function Model(props) {
         onPointerLeave={(e) => handlePointerLeave(e)}
         onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
         onUpdate={(self) => {
-          // console.log(self);
-
-          if (state.selectedCity) {
-            self.position.x = state.selectedCity.position.x;
-          }
-
           let x = [];
-
           self.children.map((child) => {
             child.material.transparent = true;
             child.material.color.setHex(0xc4c4c4);
-
-            x.push({ name: child.name, posY: 0 });
+            x.push({ id: child.name, name: child.name, posX: 0, posY: 0, posZ: 0 });
           });
 
+          console.log(x.length);
           if (state.selectedCity) {
             const child = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
           }
