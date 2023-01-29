@@ -39,10 +39,13 @@ const CameraButton = () => {
   };
 
   const handleClick = (num) => {
+    dispatch({ type: "SET_CITY_UP", payload: false });
+
     camState.cameraPos.set(...sets[num].cameraPos);
     camState.target.set(...sets[num].target);
     camState.activeMeshName = sets[num].name;
     camState.shouldUpdate = true;
+    console.log("here");
   };
 
   return (

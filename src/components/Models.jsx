@@ -68,27 +68,7 @@ const Models = ({ opts }) => {
 
   return (
     <Suspense fallback={null}>
-      {/* <Dragable transformGroup>
-        <BoundingBox visible position={[-4, 3, 0]} dims={[3, 2, 6]} offset={[0, -0.8, 0]}>
-          <Model path="/models/model_s/scene.gltf" scale={new Array(3).fill(0.01)} />
-        </BoundingBox>
-      </Dragable> */}
-
-      <Model cityPos={opts} position={[1, -0.02, 1]} path={`/models/country/iran.glb`} scale={new Array(3).fill(10)} />
-
-      {/* cityNames.map((city, index) => {
-      return (
-        <Dragable key={`object-${index}`}>
-            <Model
-              position={[-4 * index, 3, 2 * index]}
-              path={`/models/cities/${city}.glb`}
-              scale={new Array(3).fill(10)}
-            />
-            {/* <BoundingBox visibledims={[3, 2, 6]} offset={[0, -0.8, 0]}>
-            </BoundingBox> 
-          </Dragable>
-        );
-      }) */}
+      <Model cityPos={opts} position={[1, -0.1, 1]} path={`/models/country/iran_4.glb`} scale={new Array(3).fill(10)} />
     </Suspense>
   );
 };

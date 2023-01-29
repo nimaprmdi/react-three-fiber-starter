@@ -3,6 +3,7 @@ import { useLoader, useFrame } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import camState from "../camState";
+import objectState from "../objectState";
 
 // context
 import { PrimaryContext } from "../context/PrimaryContext";
@@ -29,52 +30,26 @@ function Model(props) {
     mixer?.update(delta);
 
     if (state.selectedCity && animationState) {
-      const child = objRef.current.children.find((child) => child.name === state.selectedCity.name);
-      // child.geometry.computeBoundingBox();
-      // let matrix = new THREE.Vector3();
-      // let offset = child.geometry.boundingBox.getCenter(matrix);
-      // child.position.copy(offset);
-      // objRef.current.children.push(child);
+      const selectedChild = objRef.current.children.find((child) => child.name === state.selectedCity.name);
 
-      const cityFinalPos = {
-        posX: -0.2,
-        posY: 0.3,
-        posZ: -0.1,
-
-        rotX: 1.5,
-        rotY: 0,
-        rotZ: 0,
-      };
-
-      if ((animationState && child.position.x <= -0.02) || child.position.y <= 0.003 || child.position.z <= -0.1 || child.rotation.x <= 1.5) {
-        x += 0.00005;
-        child.translateY(x);
-
-        child.position.x += 0.0005;
-        // child.position.y += 0.0005;
-        // child.position.z += 0.0005;
-
-        // child.rotation.x += 0.0002;
-        // child.rotation.y += 0.0005;
-        // child.rotation.z += 0.0005;
-      }
-
-      // setAnimationState(false);
+      objRef.current.children.map((child) => {
+        if (child.name !== selectedChild.name) {
+          child.material.opacity -= 0.01;
+        } else {
+          if (selectedChild.material.opacity < 1) {
+            selectedChild.material.opacity += 0.01;
+          }
+        }
+      });
     }
   });
 
   scene.traverse((child) => {
     if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
+      child.castShadow = false;
+      child.receiveShadow = false;
       child.material.side = THREE.FrontSide;
     }
-
-    // if (child instanceof THREE.Mesh) {
-    //   child.geometry.computeBoundingBox();
-    //   let matrix = new THREE.Vector3();
-    //   let offset = child.geometry.boundingBox.getCenter(matrix);
-    // }
   });
 
   const cameraSets = {
@@ -107,14 +82,10 @@ function Model(props) {
     dispatch({ type: "SELECT_CITY", payload: e.object });
     dispatch({ type: "SET_CITY_UP", payload: true });
 
-    camState.cameraPos.set(...cameraSets[num].cameraPos);
-    camState.target.set(...cameraSets[num].target);
-    camState.activeMeshName = cameraSets[num].name;
-    camState.shouldUpdate = true;
-
-    // Object postion
-    // e.object.position.set(-0.08, 0.004, 0);
-    // e.object.rotation.set(1.358, 0, 0);
+    // camState.cameraPos.set(...cameraSets[num].cameraPos);
+    // camState.target.set(...cameraSets[num].target);
+    // camState.activeMeshName = cameraSets[num].name;
+    // camState.shouldUpdate = true;
 
     setAnimationState(true);
   };
@@ -126,10 +97,6 @@ function Model(props) {
       ref={objRef}
       size={[1, 1, 1]}
       {...props}
-      // onClick={(e) => {
-      //   console.log(objRef.current.children[3].position.x);
-      //   objRef.current.children[3].position.x = 1;
-      // }}
       onPointerEnter={(e) => handlePointerEnter(e)}
       onPointerLeave={(e) => handlePointerLeave(e)}
       onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
@@ -140,13 +107,8 @@ function Model(props) {
           self.position.x = state.selectedCity.position.x;
         }
 
-        // Dat GUI
-        // self.position.set(props.cityPos.posX, props.cityPos.posY, props.cityPos.posZ);
-        // self.rotation.set(props.cityPos.rotX, props.cityPos.rotY, props.cityPos.rotZ);
-
-        console.log("self", self);
-
         self.children.map((child) => {
+          child.material.transparent = true;
           child.material.color.setHex(0xc4c4c4);
         });
 

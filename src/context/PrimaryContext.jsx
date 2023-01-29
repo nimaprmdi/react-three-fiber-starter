@@ -9,6 +9,7 @@ const initialState = {
 const primaryReducer = (state, action) => {
   switch (action.type) {
     case "SET_CITY_UP":
+      console.log(action.payload);
       return { ...state, isCityUp: action.payload };
 
     case "SELECT_CITY":
