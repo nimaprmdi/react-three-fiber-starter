@@ -4,6 +4,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import camState from "../camState";
 import objectState from "../objectState";
+import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 
 // context
 import { PrimaryContext } from "../context/PrimaryContext";
@@ -11,8 +12,7 @@ import { PrimaryContext } from "../context/PrimaryContext";
 function Model(props) {
   const [animationState, setAnimationState] = useState(false);
   const { state, dispatch } = useContext(PrimaryContext);
-  const objRef = useRef();
-
+  const meshRef = useRef();
   const { scene, animations, nodes } = useLoader(GLTFLoader, process.env.PUBLIC_URL + props.path);
 
   let mixer;
@@ -25,29 +25,10 @@ function Model(props) {
     });
   }
 
-  let x = 0;
-  useFrame(({ scene, delta, camera }) => {
-    mixer?.update(delta);
-
-    if (state.selectedCity && animationState) {
-      const selectedChild = objRef.current.children.find((child) => child.name === state.selectedCity.name);
-
-      objRef.current.children.map((child) => {
-        if (child.name !== selectedChild.name) {
-          child.material.opacity -= 0.01;
-        } else {
-          if (selectedChild.material.opacity < 1) {
-            selectedChild.material.opacity += 0.01;
-          }
-        }
-      });
-    }
-  });
-
   scene.traverse((child) => {
     if (child.isMesh) {
-      child.castShadow = false;
-      child.receiveShadow = false;
+      child.castShadow = true;
+      child.receiveShadow = true;
       child.material.side = THREE.FrontSide;
     }
   });
@@ -90,41 +71,69 @@ function Model(props) {
     setAnimationState(true);
   };
 
+  // chatgpt
+  const [position, setPosition] = useState([0, 0, 0]);
+  const [rotation, setRotation] = useState([0, 0, 0]);
+
+  let x = 0;
+  useFrame(({ scene, delta, camera }) => {
+    mixer?.update(delta);
+
+    if (meshRef.current) {
+      TWEEN.update();
+    }
+  });
+
+  useEffect(() => {
+    if (meshRef.current && state.selectedCity && animationState) {
+      const selectedChild = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
+
+      const mesh = selectedChild;
+      const tweenPosition = new TWEEN.Tween(mesh.position).to({ x: -0.16, y: 0.05, z: -0.05 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+      const tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 1.5, y: 0.055, z: 0.055 }, 2000).easing(TWEEN.Easing.Quadratic.Out).start();
+
+      tweenPosition.onUpdate(() => {
+        setPosition([mesh.position.x, mesh.position.y, mesh.position.z]);
+      });
+
+      tweenRotation.onUpdate(() => {
+        setRotation([mesh.rotation.x, mesh.rotation.y, mesh.rotation.z]);
+      });
+
+      selectedChild.position.set(position[0], position[1], position[2]);
+      selectedChild.rotation.set(rotation[0], rotation[1], rotation[2]);
+    }
+  }, [animationState]);
+
   return (
-    <primitive
-      object={scene}
-      scale={props.scale}
-      ref={objRef}
-      size={[1, 1, 1]}
-      {...props}
-      onPointerEnter={(e) => handlePointerEnter(e)}
-      onPointerLeave={(e) => handlePointerLeave(e)}
-      onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
-      onUpdate={(self) => {
-        console.log(self);
+    <mesh>
+      <primitive
+        object={scene}
+        scale={props.scale}
+        ref={meshRef}
+        size={[1, 1, 1]}
+        {...props}
+        onPointerEnter={(e) => handlePointerEnter(e)}
+        onPointerLeave={(e) => handlePointerLeave(e)}
+        onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
+        onUpdate={(self) => {
+          console.log(self);
 
-        if (state.selectedCity) {
-          self.position.x = state.selectedCity.position.x;
-        }
+          if (state.selectedCity) {
+            self.position.x = state.selectedCity.position.x;
+          }
 
-        self.children.map((child) => {
-          child.material.transparent = true;
-          child.material.color.setHex(0xc4c4c4);
-        });
+          self.children.map((child) => {
+            child.material.transparent = true;
+            child.material.color.setHex(0xc4c4c4);
+          });
 
-        if (state.selectedCity) {
-          const child = objRef.current.children.find((child) => child.name === state.selectedCity.name);
-
-          // child.position.x = props.cityPos.posX;
-          // child.position.y = props.cityPos.posY;
-          // child.position.z = props.cityPos.posZ;
-
-          // child.rotation.x = props.cityPos.rotX;
-          // child.rotation.y = props.cityPos.rotY;
-          // child.rotation.z = props.cityPos.rotZ;
-        }
-      }}
-    />
+          if (state.selectedCity) {
+            const child = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
+          }
+        }}
+      />
+    </mesh>
   );
 }
 
