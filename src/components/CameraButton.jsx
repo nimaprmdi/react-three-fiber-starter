@@ -1,5 +1,5 @@
 import React from "react";
-import StateHandler from "../StateHandler";
+import state from "../state";
 
 const styles = {
   height: "30px",
@@ -16,8 +16,6 @@ const styles = {
 };
 
 const CameraButton = ({ isCityUp, setIsCityUp }) => {
-  const { state, setState } = StateHandler();
-
   const sets = {
     1: {
       cameraPos: [7, 2, 6],

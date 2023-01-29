@@ -2,9 +2,13 @@ const provinces = [
   {
     id: "Curve001",
     name: "khorasan-north",
-    posX: 0,
-    posY: 0,
-    posZ: 0,
+    posX: 0.04,
+    posY: 0.16,
+    posZ: 0.39,
+
+    rotX: 1.6,
+    rotY: -0.06,
+    rotZ: -0.051,
   },
   {
     id: "Curve002",
@@ -12,6 +16,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve003",
@@ -19,6 +27,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve004",
@@ -26,6 +38,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve005",
@@ -33,6 +49,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve006",
@@ -40,6 +60,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve007",
@@ -47,6 +71,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve008",
@@ -54,6 +82,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve009",
@@ -61,6 +93,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve010",
@@ -68,6 +104,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve011",
@@ -75,6 +115,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve012",
@@ -82,6 +126,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve013",
@@ -89,6 +137,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve014",
@@ -96,6 +148,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve015",
@@ -103,6 +159,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve016",
@@ -110,6 +170,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve017",
@@ -117,6 +181,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve018",
@@ -124,6 +192,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve019",
@@ -131,6 +203,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve020",
@@ -138,6 +214,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve021",
@@ -145,6 +225,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve022",
@@ -152,6 +236,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve023",
@@ -159,6 +247,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve024",
@@ -166,6 +258,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve025",
@@ -173,6 +269,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve026",
@@ -180,6 +280,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve027",
@@ -187,6 +291,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve028",
@@ -194,6 +302,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve029",
@@ -201,6 +313,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve030",
@@ -208,6 +324,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
   {
     id: "Curve031",
@@ -215,6 +335,10 @@ const provinces = [
     posX: 0,
     posY: 0,
     posZ: 0,
+
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
   },
 ];
 

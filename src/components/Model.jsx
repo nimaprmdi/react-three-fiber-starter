@@ -3,12 +3,11 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { useLoader, useFrame } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
-import StateHandler from "../StateHandler";
-
+import state from "../state";
+import provinces from "../provinces";
 // context
 
 function Model(props) {
-  const { state } = StateHandler();
   const [children, setChildren] = useState([]);
 
   const meshRef = useRef();
@@ -34,8 +33,8 @@ function Model(props) {
 
   const cameraSets = {
     citySelect: {
-      cameraPos: [2.5790249891330435, 1.0837018399047853, 3.8996706953566083],
-      target: [-4.6207906965525725, -9.079737226323157, -24.267069032120112],
+      cameraPos: [4.6112549944717385, 3.833443853927823, 4.015649870971785],
+      target: [7.532640914156732, 4.4319060928296405, -26.104340975737742],
       cameraFov: 60,
       name: "mesh_9",
     },
@@ -85,6 +84,7 @@ function Model(props) {
   useEffect(() => {
     if (meshRef.current && state.selectedCity) {
       const selectedChild = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
+      const selectedCityInfo = provinces.find((province) => province.id === state.selectedCity.name);
 
       const mesh = selectedChild;
 
@@ -92,14 +92,24 @@ function Model(props) {
       let tweenRotation = {};
 
       if (props.isCityUp) {
-        tweenPosition = new TWEEN.Tween(mesh.position).to({ x: -0.16, y: 0.05, z: -0.05 }, 1100).easing(TWEEN.Easing.Quadratic.Out).start();
-        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 1.5, y: 0.055, z: 0.055 }, 1100).easing(TWEEN.Easing.Quadratic.Out).start();
-      } else {
         tweenPosition = new TWEEN.Tween(mesh.position)
-          .to({ x: -0.1671915203332901, y: 0, z: 0.13377836346626282 }, 1100)
+          .to({ x: selectedCityInfo.posX, y: selectedCityInfo.posY, z: selectedCityInfo.posY }, 1500)
           .easing(TWEEN.Easing.Quadratic.Out)
           .start();
-        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 0, y: 0, z: 0 }, 1100).easing(TWEEN.Easing.Quadratic.Out).start();
+
+        tweenRotation = new TWEEN.Tween(mesh.rotation)
+          .to({ x: selectedCityInfo.rotX, y: selectedCityInfo.rotY, z: selectedCityInfo.rotZ }, 1500)
+          .easing(TWEEN.Easing.Quadratic.Out)
+          .start();
+
+        // tweenPosition = new TWEEN.Tween(mesh.position).to({ x: -0.16, y: 0.05, z: -0.05 }, 1500).easing(TWEEN.Easing.Quadratic.Out).start();
+        // tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 1.5, y: 0.055, z: 0.055 }, 1500).easing(TWEEN.Easing.Quadratic.Out).start();
+      } else {
+        tweenPosition = new TWEEN.Tween(mesh.position)
+          .to({ x: -0.1671915203332901, y: 0, z: 0.13377836346626282 }, 1500)
+          .easing(TWEEN.Easing.Quadratic.Out)
+          .start();
+        tweenRotation = new TWEEN.Tween(mesh.rotation).to({ x: 0, y: 0, z: 0 }, 1500).easing(TWEEN.Easing.Quadratic.Out).start();
       }
 
       tweenPosition.onUpdate(() => {

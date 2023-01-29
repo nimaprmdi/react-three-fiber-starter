@@ -51,7 +51,7 @@ function App() {
       <Canvas onCreated={(state) => state.gl.setClearColor("#000000")} camera={{ position: [7, 7, 7] }} shadows>
         <CameraControls />
 
-        {/* <fog attach="fog" args={["#000000", 5, 50]} /> */}
+        <fog attach="fog" args={["#000000", 5, 50]} />
 
         {/* <Suspense fallback={null}>
           <Background />
@@ -80,15 +80,15 @@ function App() {
         </Physics>
       </Canvas>
 
-      <DatGui data={opts} onUpdate={setOpts}>
-        <DatNumber path="posX" min={-15} max={15} step={0.001} />
-        <DatNumber path="posY" min={-15} max={15} step={0.001} />
-        <DatNumber path="posZ" min={-15} max={15} step={0.001} />
+      {/* <DatGui data={opts} onUpdate={setOpts}>
+        <DatNumber path="posX" min={-15} max={15} step={0.01} />
+        <DatNumber path="posY" min={-15} max={15} step={0.01} />
+        <DatNumber path="posZ" min={-15} max={15} step={0.01} />
 
-        <DatNumber path="rotX" min={-15} max={15} step={0.001} />
-        <DatNumber path="rotY" min={-15} max={15} step={0.001} />
-        <DatNumber path="rotZ" min={-15} max={15} step={0.001} />
-      </DatGui>
+        <DatNumber path="rotX" min={-15} max={15} step={0.01} />
+        <DatNumber path="rotY" min={-15} max={15} step={0.01} />
+        <DatNumber path="rotZ" min={-15} max={15} step={0.01} />
+      </DatGui> */}
     </div>
   );
 }
