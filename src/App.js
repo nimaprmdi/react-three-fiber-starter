@@ -18,14 +18,18 @@ import DatGui, { DatNumber, DatColor } from "react-dat-gui";
 import "./assets/css/style.css";
 
 function App() {
+  {
+    /** x: -0.16, y: 0.05, z: -0.05
+            // x: 1.5, y: 0.055, z: 0.055  */
+  }
   const [opts, setOpts] = useState({
-    posX: 0,
-    posY: 0,
-    posZ: 0,
+    posX: -0.16,
+    posY: 0.05,
+    posZ: -0.05,
 
-    rotX: 0,
-    rotY: 0,
-    rotZ: 0,
+    rotX: 1.5,
+    rotY: 0.055,
+    rotZ: 0.055,
   });
 
   const [isCityUp, setIsCityUp] = useState(false);
@@ -76,7 +80,7 @@ function App() {
         </Physics>
       </Canvas>
 
-      {/* <DatGui data={opts} onUpdate={setOpts}>
+      <DatGui data={opts} onUpdate={setOpts}>
         <DatNumber path="posX" min={-15} max={15} step={0.001} />
         <DatNumber path="posY" min={-15} max={15} step={0.001} />
         <DatNumber path="posZ" min={-15} max={15} step={0.001} />
@@ -84,7 +88,7 @@ function App() {
         <DatNumber path="rotX" min={-15} max={15} step={0.001} />
         <DatNumber path="rotY" min={-15} max={15} step={0.001} />
         <DatNumber path="rotZ" min={-15} max={15} step={0.001} />
-      </DatGui> */}
+      </DatGui>
     </div>
   );
 }

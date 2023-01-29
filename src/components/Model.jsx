@@ -134,9 +134,16 @@ function Model(props) {
             x.push({ id: child.name, name: child.name, posX: 0, posY: 0, posZ: 0 });
           });
 
-          console.log(x.length);
           if (state.selectedCity) {
             const child = meshRef.current.children.find((child) => child.name === state.selectedCity.name);
+
+            // child.position.x = props.cityPos.posX;
+            // child.position.y = props.cityPos.posY;
+            // child.position.z = props.cityPos.posZ;
+
+            // child.rotation.x = props.cityPos.rotX;
+            // child.rotation.y = props.cityPos.rotY;
+            // child.rotation.z = props.cityPos.rotZ;
           }
         }}
       />

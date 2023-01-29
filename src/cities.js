@@ -1,4 +1,4 @@
-const cities = [
+const provinces = [
   {
     id: "Curve001",
     name: "khorasan-north",
@@ -217,3 +217,5 @@ const cities = [
     posZ: 0,
   },
 ];
+
+export default provinces;
