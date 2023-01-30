@@ -137,6 +137,9 @@ function Model(props) {
         onPointerEnter={(e) => handlePointerEnter(e)}
         onPointerLeave={(e) => handlePointerLeave(e)}
         onDoubleClick={(e) => handleDoubleClick(e, "citySelect")}
+        onClick={() => {
+          console.log("He");
+        }}
         onUpdate={(self) => {
           let x = [];
           self.children.map((child) => {

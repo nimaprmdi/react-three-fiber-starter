@@ -18,8 +18,7 @@ import DatGui, { DatNumber, DatColor } from "react-dat-gui";
 import "./assets/css/style.css";
 
 function App() {
-  const [displayGUI, setDisplayGUI] = useState(true);
-
+  const [displayGUI, setDisplayGUI] = useState(false);
   const [isCityUp, setIsCityUp] = useState(false);
   const [opts, setOpts] = useState({
     posX: 0.03,
@@ -41,21 +40,12 @@ function App() {
       }}
       style={{ height: "100vh", width: "100vw" }}
     >
-      {/* <ColorPicker /> */}
-      {/* <MoveObjectButton /> */}
-
       <CameraButton isCityUp={isCityUp} setIsCityUp={setIsCityUp} />
 
       <Canvas onCreated={(state) => state.gl.setClearColor("#000000")} camera={{ position: [7, 7, 7] }} shadows>
         <CameraControls />
 
         <fog attach="fog" args={["#000000", 5, 50]} />
-
-        {/* 
-          <Suspense fallback={null}>
-            <Background />
-          </Suspense> 
-        */}
 
         <Orbit />
         <ambientLight intensity={0.2} />
@@ -64,19 +54,7 @@ function App() {
         <Physics>
           <Models displayGUI={displayGUI} opts={opts} isCityUp={isCityUp} setIsCityUp={setIsCityUp} />
 
-          {/*<Dragable>
-            <Suspense fallback={null}>
-              <Box position={[-7, 1, 0]} />
-            </Suspense>
-
-            <Suspense fallback={null}>
-              <Box position={[7, 1, 0]} />
-            </Suspense>
-          </Dragable> */}
-
           <Floor position={[0, -0.5, 0]} />
-
-          {/* <Effects /> */}
         </Physics>
       </Canvas>
       {displayGUI && (
